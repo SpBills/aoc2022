@@ -32,6 +32,26 @@ impl Rucksack {
 
         None
     }
+
+    fn exists_in(&self, c: char) -> bool {
+        let first = &self.0[0];
+        let second = &self.0[1];       
+
+        for x in first {
+            if x.0 == c {
+                return true;
+            }
+        }
+
+        for x in second {
+            if x.0 == c {
+                return true;
+            }
+        }
+
+
+        return false
+    }
 }
 
 fn split_nth(ruck_str: String, n: usize) -> Rucksack {
@@ -59,5 +79,21 @@ fn main() {
 
     let sum: u32 = sacks.iter().map(|s| s.find_dup_sum().unwrap().1).sum();
 
+    println!("p1");
     println!("{}", sum);
+
+    println!("p2");
+    let sum2: u32 = sacks.chunks(3).flat_map(|r| {
+        for c in &r[0].0 {
+            for v in c {
+                if r[1].exists_in(v.0) && r[2].exists_in(v.0) {
+                    return Some(v.1);
+                }
+            }
+        }
+
+        None
+    }).sum();
+
+    println!("{}", sum2);
 }
