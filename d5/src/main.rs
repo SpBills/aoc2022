@@ -2,7 +2,7 @@ use std::fs;
 
 type Stack<T> = Vec<T>;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Board(Vec<Stack<char>>);
 
 impl Board {
@@ -43,6 +43,8 @@ fn main() {
     // empty line
     lines.next();
 
+    let mut part_2_board = board.clone();
+
     // parse in the moves
     let mut moves: Vec<Move> = Vec::new();
     while let Some(line) = lines.next() {
@@ -55,7 +57,7 @@ fn main() {
     }
 
     // do the moves
-    for m in moves {
+    for m in moves.clone() {
         let ref mut from_stack = board.0[m.1];
 
         let mut v: Vec<char> = vec![];
@@ -67,8 +69,32 @@ fn main() {
         board.0[m.2].append(&mut v);
     }
 
+    println!("pt1");
     // get top of each stack
     for s in board.0 {
         print!("{}", s.last().unwrap());
     }
+    println!();
+
+    // do the moves
+    for m in moves {
+        let ref mut from_stack = part_2_board.0[m.1];
+
+        let mut v: Vec<char> = vec![];
+        for _ in 0..m.0 {
+            let t = from_stack.pop().unwrap();
+            v.push(t);
+        }
+
+        v.reverse();
+
+        part_2_board.0[m.2].append(&mut v);
+    }
+
+    println!("pt2");
+    // get top of each stack
+    for s in part_2_board.0 {
+        print!("{}", s.last().unwrap());
+    }
+    println!();
 }
