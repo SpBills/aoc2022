@@ -15,7 +15,7 @@ fn main() {
             let part = p.partition_dedup();
             (i+4, part.1.len() == 0)
         })
-        .filter(|(_, b)| !!b)
+        .filter(|(_, b)| *b)
         .collect::<Vec<_>>();
 
     println!("Part 1 found at {}", window[0].0);
